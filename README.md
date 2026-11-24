@@ -210,12 +210,11 @@ Planned evidence:
 
 ## 👩‍💻 Author
 
-**Tanishka**
+**AYUSH KUMAR SINGH**
 
 B.Tech CSE | AI & ML
 
-GitHub: [@Tanishkaaggarwal13](https://github.com/Tanishkaaggarwal13)
-
+GitHub:  [@ayush1365](https://github.com/ayush1365)
 ---
 
 ⭐ If you find this project useful, consider giving the repository a star!
