@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Counter | Cloud Monitor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="dashboard">
+
+        <header class="topbar">
+            <div class="brand">
+                <div class="brand-icon">☁</div>
+                <div>
+                    <h1>Cloud Visitor Counter</h1>
+                    <p>Container & Kubernetes Monitoring</p>
+                </div>
+            </div>
+
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                LOCAL ENVIRONMENT
+            </div>
+        </header>
+
+        <main>
+
+            <section class="welcome">
+                <p class="eyebrow">CLOUD APPLICATION DASHBOARD</p>
+                <h2>Application Overview</h2>
+                <p>Monitor visitor activity and application health.</p>
+            </section>
+
+            <section class="visitor-card">
+                <div class="visitor-card-top">
+                    <span> Total Visitors</span>
+                    <span class="visitor-icon">↗</span>
+                </div>
+
+                <h3 id="visitor-count">{{ count }}</h3>
+
+                <p>Unique requests recorded by the counter</p>
+
+                <button onclick="window.location.reload()">
+                    ↻ Refresh Counter
+                </button>
+            </section>
+
+            <section class="section-heading">
+                <h3>Infrastructure Status</h3>
+                <p>Live information from your application</p>
+            </section>
+
+            <section class="status-grid">
+
+                <div class="status-card">
+                    <div class="card-heading">
+                        <span class="card-icon">◉</span>
+                        <span>Application Health</span>
+                    </div>
+
+                    <h3 id="health-status">Checking...</h3>
+                    <p>Flask application status</p>
+                </div>
+
+                <div class="status-card">
+                    <div class="card-heading">
+                        <span class="card-icon">▤</span>
+                        <span>Redis Database</span>
+                    </div>
+
+                    <h3 id="redis-status">Checking...</h3>
+                    <p>Database connectivity</p>
+                </div>
+
+                <div class="status-card">
+                    <div class="card-heading">
+                        <span class="card-icon">⌘</span>
+                        <span>Cluster</span>
+                    </div>
+
+                    <h3 id="cluster-name">{{ cluster }}</h3>
+                    <p>Current deployment environment</p>
+                </div>
+
+                <div class="status-card">
+                    <div class="card-heading">
+                        <span class="card-icon">▣</span>
+                        <span>Container / Pod</span>
+                    </div>
+
+                    <h3 class="hostname" id="pod-name">{{ pod }}</h3>
+                    <p>Serving this request</p>
+                </div>
+
+            </section>
+
+            <section class="info-banner">
+                <div class="info-symbol">i</div>
+                <div>
+                    <strong>Cloud deployment ready</strong>
+                    <p>This application is containerized and designed for Docker and Kubernetes deployment.</p>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>Visitor Counter Project · Flask · Redis · Docker · Kubernetes</p>
+        </footer>
+
+    </div>
+
+    <script>
+        async function checkEndpoint(url) {
+            try {
+                const response = await fetch(url);
+                return response.ok;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        async function updateStatus() {
+            const health = await checkEndpoint("/health");
+            const ready = await checkEndpoint("/ready");
+
+            const healthElement = document.getElementById("health-status");
+            const redisElement = document.getElementById("redis-status");
+
+            healthElement.textContent = health ? "Healthy" : "Unavailable";
+            healthElement.className = health ? "status-ok" : "status-error";
+
+            redisElement.textContent = ready ? "Connected" : "Unavailable";
+            redisElement.className = ready ? "status-ok" : "status-error";
+        }
+
+        updateStatus();
+    </script>
+
+</body>
+</html>

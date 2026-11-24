@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels: {app: web}
+spec:
+  replicas: 6            # fixed, sized for peak load, no autoscaler
+  selector:
+    matchLabels: {app: web}
+  template:
+    metadata:
+      labels: {app: web}
+    spec:
+      containers:
+        - name: web
+          image: visitor-counter:before
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          env:
+            - {name: REDIS_HOST, value: redis}
+            - {name: CLUSTER_NAME, value: local}
+          resources:
+            requests: {cpu: 500m, memory: 512Mi}     # guessed, not measured
+            limits: {cpu: "1", memory: 1Gi}
+          readinessProbe:
+            httpGet: {path: /ready, port: 5000}
+            periodSeconds: 5

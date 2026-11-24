@@ -1,0 +1,9 @@
+.git
+__pycache__
+*.pyc
+docs
+k8s
+kind
+hybrid
+tools
+scripts
